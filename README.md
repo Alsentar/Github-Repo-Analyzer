@@ -1,72 +1,136 @@
-# Prueba-tecnica-github-api
+# GitHub Repository Analyzer
+
+-------------------------------------------------------------------------
+
+This project is a simple full-stack web application that connects to the GitHub REST API using a Personal Access Token and displays information about a user's repositories.
+
+The application retrieves the authenticated user's repositories and presents basic information such as:
+
+- GitHub username
+
+- Total number of repositories
+
+- Repository names
+
+- Number of stars per repository
 
 
-Saludos Cordiales, Sr. Carlos Ramirez. En este README encontrara una descripcion general del programa y las instrucciones para ejecutarlo.
+The backend communicates with GitHub using Octokit, while the frontend displays the retrieved data in a dynamic React interface.
 
+-------------------------------------------------------------------------
 
-------------------------------------------
+Tech Stack
 
-Instrucciones de ejecucion:
+Backend:
 
+- Node.js
 
--Para probar el programa, se requiere tener Node.js instalado en su maquina.
+- Express.js
 
--Asumiendo que tiene Node.js instalado, debera clonar el repositorio en su maquina.
+- Octokit (GitHub API client)
 
--Seguido, navegar en la consola bash al directorio \Prueba-tecnica-github-api\backend 
+- dotenv
 
--Debera de re-crear el archivo .env, cuyo contenido es el siguiente:
+Frontend:
 
-(Detallado en el README enviado en el correo)
+- React
 
--Ejecutar el comando: node server.js
+- Vite
 
--Al iniciar el servidor de Express, abrir el navegador con la ruta http://localhost:3000
+- React Router
 
+APIs:
 
-------------------------------------------
+- GitHub REST API
 
-Estructura del repositorio:
+-------------------------------------------------------------------------
 
-Prueba-tecnica-github-api/
+Project Structure
+Prueba-tecnica-github-api
+│
+├── backend
+│   ├── apis
+│   │   └── githubapi.js
+│   │
+│   ├── server.js
+│   ├── package.json
+│   └── .env
+│
+├── frontend (legacy)
 |
-|--frontend/
-    |
-    |--index.html
-    |--consulta.html
-    |--style.css
-    |--stylerepos.css
-    |--script.js
-|--backend/
-    |
-    |--apis/
-        |
-        |--githubapi.js
-    |--node_modules/
-    |--.env
-    |--package-lock.json
-    |--package.json
-    |--server.js
-|--.gitignore
-|--README.md
+├── frontend-react
+│   ├── src
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   │
+│   ├── dist
+│   └── package.json
+│
+├── .gitignore
+└── README.md
 
-------------------------------------------
 
-Flujo general del proyecto:
+-------------------------------------------------------------------------
+Application Workflow
 
--Al iniciar el servidor, App() sirve index.html al browser que ingrese a localhost:3000
+The application follows a simple client-server architecture
 
--Al presionar el boton en index.html, se carga el contenido de consulta.html.
+# 1. Express Server Initialization
 
--Al cargar el contenido se inicia un evento en su script que pide un fetch a la ruta de la api
+When the backend server starts:
 
--Cuando el backend escucha la llamada a la ruta, llama a una funcion asincrona que hace tres funciones:
+- Express initializes middleware.
 
---Crea una instancia de Octokit mediante el Personal Access Token autenticado
---Pide la informacion de usuario a octokit mediante un metodo GET
---Pide la informacion de repositorios a ocokit mediante un metodo GET
+- The React production build (dist) is served as static content.
 
--La respuesta a la llamada de api es entregada al frontend y convertida a JSON
+- The API endpoint /api/github becomes available.
 
--El script del frontend manipula el DOM para llenar una tabla dinamica con la respuesta de la API. 
+# 2. Frontend Request
+
+When the user opens the application in the browser:
+
+- The React frontend sends a request to:
+
+GET /api/github
+
+# 3. Backend API Processing
+
+When Express receives the request:
+
+- The route handler calls the function getGitHubData().
+
+- The function creates an Octokit instance authenticated using the GitHub Personal Access Token.
+
+Two requests are sent to the GitHub API:
+
+GET /user
+GET /user/repos
+
+The response data is processed and formatted.
+
+# 4. Response Handling
+
+The backend returns a JSON response containing:
+
+{
+  username,
+  repoCount,
+  repos: [
+    { name, stars }
+  ]
+}
+
+# 5. Frontend Rendering
+
+The React frontend receives the JSON response and dynamically renders the data in a table displaying:
+
+- Repository name
+
+- Number of stars
+
+- Security Notes
+
+
 
